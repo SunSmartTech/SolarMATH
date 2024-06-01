@@ -1,0 +1,53 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model CalculationTool {
+  calculationDetails String?
+  createdAt          DateTime         @default(now())
+  customerProfile    CustomerProfile? @relation(fields: [customerProfileId], references: [id])
+  customerProfileId  String?
+  id                 String           @id @default(cuid())
+  result             Json?
+  toolName           String?
+  updatedAt          DateTime         @updatedAt
+}
+
+model SystemOption {
+  cost        Float?
+  createdAt   DateTime @default(now())
+  description String?
+  id          String   @id @default(cuid())
+  systemName  String?
+  updatedAt   DateTime @updatedAt
+}
+
+model CustomerProfile {
+  bestContactTimes EnumCustomerProfileBestContactTimes?
+  calculationTools CalculationTool[]
+  createdAt        DateTime                             @default(now())
+  customerStatusId Int?
+  customerType     String?
+  email            String?
+  firstname        String?
+  id               String                               @id @default(cuid())
+  lastname         String?
+  notYetAssigned   Boolean?
+  phone            String?
+  requirements     String?
+  site_adress      String
+  updatedAt        DateTime                             @updatedAt
+}
+
+enum EnumCustomerProfileBestContactTimes {
+  middays
+  evenings
+  mornings
+  afternoons
+  any_time
+}
