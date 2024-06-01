@@ -1,5 +1,5 @@
 {
-  "name": "@ref/admin",
+  "name": "@references/admin",
   "private": true,
   "dependencies": {
     "@apollo/client": "3.6.9",

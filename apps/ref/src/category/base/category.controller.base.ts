@@ -22,6 +22,9 @@ import { Category } from "./Category";
 import { CategoryFindManyArgs } from "./CategoryFindManyArgs";
 import { CategoryWhereUniqueInput } from "./CategoryWhereUniqueInput";
 import { CategoryUpdateInput } from "./CategoryUpdateInput";
+import { CategoryOptionFindManyArgs } from "../../categoryOption/base/CategoryOptionFindManyArgs";
+import { CategoryOption } from "../../categoryOption/base/CategoryOption";
+import { CategoryOptionWhereUniqueInput } from "../../categoryOption/base/CategoryOptionWhereUniqueInput";
 
 export class CategoryControllerBase {
   constructor(protected readonly service: CategoryService) {}
@@ -142,5 +145,77 @@ export class CategoryControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.Get("/:id/categoryOptions")
+  @ApiNestedQuery(CategoryOptionFindManyArgs)
+  async findCategoryOptions(
+    @common.Req() request: Request,
+    @common.Param() params: CategoryWhereUniqueInput
+  ): Promise<CategoryOption[]> {
+    const query = plainToClass(CategoryOptionFindManyArgs, request.query);
+    const results = await this.service.findCategoryOptions(params.id, {
+      ...query,
+      select: {
+        id: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/categoryOptions")
+  async connectCategoryOptions(
+    @common.Param() params: CategoryWhereUniqueInput,
+    @common.Body() body: CategoryOptionWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      categoryOptions: {
+        connect: body,
+      },
+    };
+    await this.service.updateCategory({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/categoryOptions")
+  async updateCategoryOptions(
+    @common.Param() params: CategoryWhereUniqueInput,
+    @common.Body() body: CategoryOptionWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      categoryOptions: {
+        set: body,
+      },
+    };
+    await this.service.updateCategory({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/categoryOptions")
+  async disconnectCategoryOptions(
+    @common.Param() params: CategoryWhereUniqueInput,
+    @common.Body() body: CategoryOptionWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      categoryOptions: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateCategory({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }
