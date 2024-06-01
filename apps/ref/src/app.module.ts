@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { CategoryModule } from "./category/category.module";
 import { OptionModule } from "./option/option.module";
+import { CategoryOptionModule } from "./categoryOption/categoryOption.module";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { SecretsManagerModule } from "./providers/secrets/secretsManager.module";
@@ -15,6 +16,7 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
   imports: [
     CategoryModule,
     OptionModule,
+    CategoryOptionModule,
     HealthModule,
     PrismaModule,
     SecretsManagerModule,

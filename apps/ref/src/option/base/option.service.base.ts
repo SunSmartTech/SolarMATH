@@ -10,7 +10,11 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "../../prisma/prisma.service";
-import { Prisma, Option as PrismaOption } from "@prisma/client";
+import {
+  Prisma,
+  Option as PrismaOption,
+  CategoryOption as PrismaCategoryOption,
+} from "@prisma/client";
 
 export class OptionServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
@@ -43,5 +47,16 @@ export class OptionServiceBase {
     args: Prisma.SelectSubset<T, Prisma.OptionDeleteArgs>
   ): Promise<PrismaOption> {
     return this.prisma.option.delete(args);
+  }
+
+  async findCategoryOptions(
+    parentId: string,
+    args: Prisma.CategoryOptionFindManyArgs
+  ): Promise<PrismaCategoryOption[]> {
+    return this.prisma.option
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .categoryOptions(args);
   }
 }
