@@ -11,11 +11,21 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional, IsDate } from "class-validator";
+import { CategoryOption } from "../../categoryOption/base/CategoryOption";
+import { ValidateNested, IsOptional, IsString, IsDate } from "class-validator";
 import { Type } from "class-transformer";
 
 @ObjectType()
 class Category {
+  @ApiProperty({
+    required: false,
+    type: () => [CategoryOption],
+  })
+  @ValidateNested()
+  @Type(() => CategoryOption)
+  @IsOptional()
+  categoryOptions?: Array<CategoryOption>;
+
   @ApiProperty({
     required: false,
     type: String,

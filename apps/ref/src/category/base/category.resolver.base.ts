@@ -20,6 +20,8 @@ import { CategoryFindUniqueArgs } from "./CategoryFindUniqueArgs";
 import { CreateCategoryArgs } from "./CreateCategoryArgs";
 import { UpdateCategoryArgs } from "./UpdateCategoryArgs";
 import { DeleteCategoryArgs } from "./DeleteCategoryArgs";
+import { CategoryOptionFindManyArgs } from "../../categoryOption/base/CategoryOptionFindManyArgs";
+import { CategoryOption } from "../../categoryOption/base/CategoryOption";
 import { CategoryService } from "../category.service";
 @graphql.Resolver(() => Category)
 export class CategoryResolverBase {
@@ -95,5 +97,19 @@ export class CategoryResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => [CategoryOption], { name: "categoryOptions" })
+  async findCategoryOptions(
+    @graphql.Parent() parent: Category,
+    @graphql.Args() args: CategoryOptionFindManyArgs
+  ): Promise<CategoryOption[]> {
+    const results = await this.service.findCategoryOptions(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
   }
 }
