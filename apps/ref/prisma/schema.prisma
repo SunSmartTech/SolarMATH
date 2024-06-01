@@ -1,0 +1,27 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Category {
+  createdBy  String?   @unique
+  createdOn  DateTime  @default(now())
+  id         String    @id @default(cuid())
+  label      String
+  modifiedBy String?   @unique
+  modifiedOn DateTime? @updatedAt
+}
+
+model Option {
+  createdAt  DateTime @default(now())
+  createdBy  String?  @unique
+  id         String   @id @default(cuid())
+  label      String?
+  modifiedBy String?  @unique
+  updatedAt  DateTime @updatedAt
+  value      String?
+}
