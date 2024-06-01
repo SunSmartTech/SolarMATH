@@ -13,6 +13,10 @@ import { OptionList } from "./option/OptionList";
 import { OptionCreate } from "./option/OptionCreate";
 import { OptionEdit } from "./option/OptionEdit";
 import { OptionShow } from "./option/OptionShow";
+import { CategoryOptionList } from "./categoryOption/CategoryOptionList";
+import { CategoryOptionCreate } from "./categoryOption/CategoryOptionCreate";
+import { CategoryOptionEdit } from "./categoryOption/CategoryOptionEdit";
+import { CategoryOptionShow } from "./categoryOption/CategoryOptionShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -32,7 +36,7 @@ const App = (): React.ReactElement => {
   return (
     <div className="App">
       <Admin
-        title={"ref"}
+        title={"References"}
         dataProvider={dataProvider}
         authProvider={jwtAuthProvider}
         theme={theme}
@@ -52,6 +56,13 @@ const App = (): React.ReactElement => {
           edit={OptionEdit}
           create={OptionCreate}
           show={OptionShow}
+        />
+        <Resource
+          name="CategoryOption"
+          list={CategoryOptionList}
+          edit={CategoryOptionEdit}
+          create={CategoryOptionCreate}
+          show={CategoryOptionShow}
         />
       </Admin>
     </div>
