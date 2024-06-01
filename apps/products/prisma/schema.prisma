@@ -1,0 +1,58 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  createdAt DateTime @default(now())
+  email     String?  @unique
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String?
+  password  String
+  roles     Json
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
+
+model Manufacturer {
+  createdBy    String?
+  createdOn    DateTime   @default(now())
+  displayOrder Int?
+  id           String     @id @default(cuid())
+  label        String?
+  modifiedBy   String?
+  modifiedOn   DateTime   @updatedAt
+  productTypes String?
+  pVmodules    PVmodule[]
+}
+
+model Category {
+  id            String        @id @default(cuid())
+  label         String        @unique
+  subCategories SubCategory[]
+}
+
+model SubCategory {
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String   @unique
+  id         String   @id @default(cuid())
+  label      String   @unique
+}
+
+model PVmodule {
+  cellQuantity     Int?
+  id               String       @id @default(cuid())
+  manufacturer     Manufacturer @relation(fields: [manufacturerId], references: [id])
+  manufacturerId   String
+  maxPvVoltage     Int?
+  model            String
+  ratedPower       Int?
+  temperatureHighC Int?
+  temperatureLowC  Int?
+  unitPrice        Float?
+}
